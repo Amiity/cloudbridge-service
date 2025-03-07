@@ -1,5 +1,8 @@
 package com.amiity.cloudbridge.service;
 
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.util.IOUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -8,6 +11,8 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 @Slf4j
@@ -32,12 +37,12 @@ public class FileUploadService {
                     .key(key)
                     .contentType(file.getContentType())
                     .build();
-            log.info("Uploading File....");
+            log.info("🚀 Uploading File....");
             s3Client.putObject(request, RequestBody.fromBytes(file.getBytes()));
-            return "File uploaded successfully: " + key;
+            return s3Client.utilities().getUrl(b -> b.bucket(bucketName).key(key)).toString();
 
         } catch (IOException e) {
-            return "Upload failed: " + e.getMessage();
+            return "❌ Upload failed: " + e.getMessage();
         }
     }
 }
