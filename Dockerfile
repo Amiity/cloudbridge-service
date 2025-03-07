@@ -2,6 +2,6 @@ FROM openjdk:17
 
 WORKDIR /app
 
-COPY *.jar .
+COPY target/*.jar application.jar
 
-CMD ["java", "-jar", "CloudBridge-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "application.jar"]
