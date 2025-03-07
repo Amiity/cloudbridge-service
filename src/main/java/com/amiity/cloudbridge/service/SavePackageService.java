@@ -15,16 +15,11 @@ public class SavePackageService {
 
     private static final String DEPLOYMENT_DIR = "/tmp/deployments";
 
-    public File saveTempFile(MultipartFile file, String imageName, MultipartFile dockerfile) throws IOException {
+    public File downloadPackage(MultipartFile file, String imageName, MultipartFile dockerfile) throws IOException {
 
-        // Save the Dockerfile in the imageName directory
-        File dockerDir = new File(DEPLOYMENT_DIR, imageName);
-        if (!dockerDir.exists() && !dockerDir.mkdirs()) {
-            throw new IOException("❌ Failed to create Dockerfile directory: " + dockerDir.getAbsolutePath());
-        }
-        File savedDockerfile = saveFile(dockerfile, dockerDir);
+        File copiedDockerfile = copyDockerfile(imageName, dockerfile);
 
-        // Determine the target directory where the JAR file should be saved
+        // Determine the target directory from docker file where the JAR file should be copy
         String jarDestination = determineJarDestination(dockerfile);
 
         // Construct the directory path based on the extracted destination
@@ -38,11 +33,21 @@ public class SavePackageService {
         // Save the file in the determined directory
         saveFile(file, dir);
 
-        return savedDockerfile;
+        return copiedDockerfile;
+    }
+
+    private File copyDockerfile(String imageName, MultipartFile dockerfile) throws IOException {
+        // Save the Dockerfile in the imageName directory
+        File dockerDir = new File(DEPLOYMENT_DIR, imageName);
+        if (!dockerDir.exists() && !dockerDir.mkdirs()) {
+            throw new IOException("❌ Failed to create Dockerfile directory: " + dockerDir.getAbsolutePath());
+        }
+        return saveFile(dockerfile, dockerDir);
     }
 
     private String determineJarDestination(MultipartFile dockerfile) throws IOException {
-        String defaultJarDestination = ""; ; // Default to "target" unless overridden
+        String defaultJarDestination = "";
+        ; // Default to "target" unless overridden
 
         if (dockerfile != null && !dockerfile.isEmpty()) {
             String dockerfileContent = new String(dockerfile.getBytes());

@@ -12,12 +12,10 @@ public final class DeploymentUtility {
     /**
      * Finds the next available port starting from the given base port.
      */
-    public static int findAvailablePort(int basePort) throws IOException {
-        int port = basePort;
-        while (isPortInUse(port)) {
-            port++;
+    public static int findAvailablePort() throws IOException {
+        try (ServerSocket socket = new ServerSocket(0)) {  // 0 means pick any available port
+            return socket.getLocalPort();
         }
-        return port;
     }
 
     /**
