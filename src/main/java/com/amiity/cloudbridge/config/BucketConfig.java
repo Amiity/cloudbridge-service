@@ -24,7 +24,7 @@ public class BucketConfig {
 
     @Bean
     public S3Client s3Client() {
-        log.info("Configuring s3 Client");
+        log.info("🔄 configuring s3 client");
         return S3Client.builder()
                 .region(Region.of(region))
                 .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey)))

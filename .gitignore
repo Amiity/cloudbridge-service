@@ -31,3 +31,24 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignore build and output files
+/target/
+*.jar
+*.war
+*.ear
+
+# Ignore IDE files
+/.idea/
+/.vscode/
+/*.iml
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore Maven cache and wrapper binaries
+/.mvn/
+.gitattributes
+mvnw
+mvnw.cmd

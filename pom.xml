@@ -40,6 +40,11 @@
             <artifactId>s3</artifactId>
             <version>2.25.19</version> <!-- Use latest version -->
         </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>1.12.680</version>
+        </dependency>
 
         <!-- AWS SDK for EC2 -->
         <dependency>
